@@ -66,7 +66,7 @@
     block(
       spacing: 1.5em,
       [
-        #link(section.loc, utils.section-short-title(section))<touying-link>
+        #link(section.loc, section.title)<touying-link>
       ],
     )
   }
