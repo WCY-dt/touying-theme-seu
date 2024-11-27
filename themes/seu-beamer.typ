@@ -6,52 +6,68 @@
 
 #let seu-nav-bar(self: none) = states.touying-progress-with-sections(dict => {
   let (current-sections, final-sections) = dict
-  current-sections = current-sections.filter(section => section.loc != none).map(section => (
-    section,
-    section.children,
-  )).flatten().filter(item => item.kind == "section")
-  final-sections = final-sections.filter(section => section.loc != none).map(section => (
-    section,
-    section.children,
-  )).flatten().filter(item => item.kind == "section")
+
+  current-sections = current-sections
+    .filter(section => section.loc != none)
+    .map(section => (section, section.children,))
+    .flatten()
+    .filter(item => item.kind == "section")
+
+  final-sections = final-sections
+    .filter(section => section.loc != none)
+    .map(section => (section, section.children,))
+    .flatten()
+    .filter(item => item.kind == "section")
+
   let current-index = current-sections.len() - 1
 
   set text(size: 0.5em)
+
   for (i, section) in final-sections.enumerate() {
     set text(fill: if i != current-index {
       gray
     } else {
       white
     })
-    box(inset: 0.5em)[#link(section.loc, utils.section-short-title(section))<touying-link>]
+    box(inset: 0.5em)[
+      #link(section.loc, utils.section-short-title(section))<touying-link>
+    ]
   }
 })
 
 #let seu-outline(self: none) = states.touying-progress-with-sections(dict => {
   let (current-sections, final-sections) = dict
-  current-sections = current-sections.filter(section => section.loc != none).map(section => (
-    section,
-    section.children,
-  )).flatten().filter(item => item.kind == "section")
-  final-sections = final-sections.filter(section => section.loc != none).map(section => (
-    section,
-    section.children,
-  )).flatten().filter(item => item.kind == "section")
+
+  current-sections = current-sections
+    .filter(section => section.loc != none)
+    .map(section => (section, section.children,))
+    .flatten()
+    .filter(item => item.kind == "section")
+
+  final-sections = final-sections
+    .filter(section => section.loc != none)
+    .map(section => (section, section.children,))
+    .flatten()
+    .filter(item => item.kind == "section")
+
   let current-index = current-sections.len() - 1
 
-  // set text(size: 0.5em)
   for (i, section) in final-sections.enumerate() {
     if i == 0 {
       continue
     }
+
     set text(fill: if current-index == 0 or i == current-index {
       self.colors.primary
     } else {
       self.colors.primary.lighten(80%)
     })
+
     block(
       spacing: 1.5em,
-      [#link(section.loc, utils.section-short-title(section))<touying-link>],
+      [
+        #link(section.loc, utils.section-short-title(section))<touying-link>
+      ],
     )
   }
 })
@@ -80,13 +96,13 @@
   if display-current-section != auto {
     self.seu-display-current-section = display-current-section
   }
+
   (self.methods.touying-slide)(
     ..args.named(),
     self: self,
     title: title,
     setting: body => {
       show: args.named().at("setting", default: body => body)
-      // align(center + horizon, block(body))
       align(horizon, body)
     },
     ..args.pos(),
@@ -95,6 +111,7 @@
 
 #let title-slide(self: none, ..args) = {
   let info = self.info + args.named()
+
   info.authors = {
     let authors = if "authors" in info {
       info.authors
@@ -107,10 +124,12 @@
       (authors,)
     }
   }
+
   let content = {
     if info.logo != none {
       align(right, info.logo)
     }
+
     show: align.with(center + horizon)
     block(
       fill: self.colors.primary,
@@ -118,13 +137,25 @@
       radius: 0.5em,
       breakable: false,
       {
-        text(size: 1.2em, fill: self.colors.neutral-lightest, weight: "bold", info.title)
+        text(
+          size: 1.2em,
+          fill: self.colors.neutral-lightest,
+          weight: "bold",
+          info.title
+        )
+
         if info.subtitle != none {
           parbreak()
-          text(size: 1.0em, fill: self.colors.neutral-lightest, weight: "bold", info.subtitle)
+          text(
+            size: 1.0em,
+            fill: self.colors.neutral-lightest,
+            weight: "bold",
+            info.subtitle
+          )
         }
       },
     )
+
     // authors
     grid(
       columns: (1fr,) * calc.min(info.authors.len(), 3),
@@ -132,41 +163,63 @@
       row-gutter: 1em,
       ..info.authors.map(author => text(fill: black, author)),
     )
+
     v(0.5em)
+
     // institution
     if info.institution != none {
       parbreak()
       text(size: 0.7em, info.institution)
     }
+
     // date
     if info.date != none {
       parbreak()
       text(size: 1.0em, utils.info-date(self))
     }
   }
-  (self.methods.touying-slide)(self: self, repeat: none, content)
+
+  (self.methods.touying-slide)(
+    self: self,
+    repeat: none,
+    content
+  )
 }
 
 #let outline-slide(self: none) = {
   self.seu-title = [目录]
+
   let content = {
     set align(horizon)
     set text(weight: "bold")
     hide([-])
     seu-outline(self: self)
   }
-  (self.methods.touying-slide)(self: self, repeat: none, section: (title: [目录]), content)
+
+  (self.methods.touying-slide)(
+    self: self,
+    repeat: none,
+    section: (title: [目录]),
+    content
+  )
 }
 
 #let new-section-slide(self: none, short-title: auto, title) = {
   self.seu-title = [目录]
+
   let content = {
     set align(horizon)
     set text(weight: "bold")
-    hide([-]) // 如果没这个会导致显示出问题
+    hide([-])
     seu-outline(self: self)
   }
-  (self.methods.touying-slide)(self: self, repeat: none, section: (title: title, short-title: short-title), content)
+
+  (self.methods.touying-slide)(
+    self: self,
+    repeat: none,
+    section: (title: title, short-title: short-title),
+    content
+  )
 }
 
 #let ending-slide(self: none, title: none, body) = {
@@ -177,19 +230,33 @@
         fill: self.colors.tertiary,
         inset: (x: 3em, y: 0.7em),
         radius: 0.5em,
-        text(size: 1.5em, fill: self.colors.neutral-lightest, title),
+        text(
+          size: 1.5em,
+          fill: self.colors.neutral-lightest,
+          title
+        ),
       )
     }
     body
   }
-  (self.methods.touying-slide)(self: self, repeat: none, content)
+
+  (self.methods.touying-slide)(
+    self: self,
+    repeat: none,
+    content
+  )
 }
 
 #let slides(self: none, title-slide: true, slide-level: 1, ..args) = {
   if title-slide {
     (self.methods.title-slide)(self: self)
   }
-  (self.methods.touying-slides)(self: self, slide-level: slide-level, ..args)
+
+  (self.methods.touying-slides)(
+    self: self,
+    slide-level: slide-level,
+    ..args
+  )
 }
 
 #let register(
@@ -220,6 +287,7 @@
     neutral-lightest: rgb("#ffffff"),
     neutral-darkest: rgb("#000000"),
   )
+
   // marker
   self.seu-knob-marker = box(
     width: 0.5em,
@@ -246,6 +314,7 @@
       components.cell(fill: self.colors.tertiary),
     )
   })
+
   self.seu-navigation = self => {
     grid(
       align: center + horizon,
@@ -256,6 +325,7 @@
       block(fill: self.colors.primary, inset: 0.1em, image("assets/seu-logo-min.svg", height: 100%)),
     )
   }
+
   self.seu-display-current-section = display-current-section
   self.seu-title = none
   self.seu-subtitle = none
@@ -278,6 +348,7 @@
       cell(fill: self.colors.primary, utils.call-or-display(self, footer-d)),
     )
   }
+
   self.seu-header = self => {
     if self.seu-title != none {
       block(
@@ -292,6 +363,7 @@
       )
     }
   }
+
   // set page
   let header(self) = {
     set align(top)
@@ -316,6 +388,7 @@
     margin: (top: 4em, bottom: 0.7em, x: 2.5em),
     background: place(center + horizon, dx: 50%, dy: 5%, image("assets/seu-background-min.svg", width: 75%)),
   )
+
   // register methods
   self.methods.slide = slide
   self.methods.title-slide = title-slide
@@ -328,7 +401,6 @@
     states.touying-outline(self: self, enum-args: (tight: false) + enum-args, ..args)
   }
   self.methods.alert = (self: none, it) => text(fill: self.colors.primary, it)
-
   self.methods.tblock = (self: none, title: none, it) => {
     grid(
       columns: 1,
@@ -338,10 +410,18 @@
         width: 100%,
         radius: (top: 0.4em),
         inset: (top: 0.4em, bottom: 0.3em, x: 0.5em),
-        text(fill: self.colors.neutral-lightest, weight: "bold", title),
+        text(
+          fill: self.colors.neutral-lightest,
+          weight: "bold",
+          title
+        ),
       ),
       rect(
-        fill: gradient.linear(self.colors.primary-dark, self.colors.primary.lighten(90%), angle: 90deg),
+        fill: gradient.linear(
+          self.colors.primary-dark,
+          self.colors.primary.lighten(90%),
+          angle: 90deg
+        ),
         width: 100%,
         height: 4pt,
       ),
