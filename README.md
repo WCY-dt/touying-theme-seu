@@ -8,6 +8,9 @@ SEU-styled slide themes and templates based on [Touying](https://touying-typ.git
 
 So far, only a theme inspired by <https://github.com/TouchFishPioneer/SEU-Beamer-Slide> is provided. The example can be found in `examples/beamer-sms.typ`.
 
+> [!NOTE]
+> This theme requires the installation of [Helvetica](./themes/assets/Helvetica.ttf) and [SimHei](./themes/assets/SimHei.ttf) fonts, both of which can be found in the [`themes/assets`](./themes/assets) directory.
+
 Welcome to contribute more templates!
 
 ## License

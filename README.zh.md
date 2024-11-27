@@ -8,6 +8,9 @@
 
 目前只提供了一个 Beamer 风格的主题 `themes/seu-beamer.typ`，仿自 <https://github.com/TouchFishPioneer/SEU-Beamer-Slide>，在 `examples/beamer-sms.typ` 中提供迁移示例。
 
+> [!NOTE]
+> 本主题需要安装 [Helvetica](./themes/assets/Helvetica.ttf) 和 [SimHei](./themes/assets/SimHei.ttf) 字体，这两个字体均可在 [`themes/assets`](./themes/assets) 目录下找到。
+
 欢迎投稿更多模板！
 
 ## License
